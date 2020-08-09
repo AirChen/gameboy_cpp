@@ -9,12 +9,13 @@ name = header
 
 $(name) : $(objects)
 		@echo Linking $@
-		$(CXX) -o $@ $(CXXFLAGS) $^
-
+		$(CXX) -o $@ $(CXXFLAGS) $^ libminifb.a -fobjc-link-runtime -framework CoreGraphics -framework AppKit
+		
 %.o : %.cpp
 		@echo Compiling $*.cpp
-		$(CXX) -c $< $(CPPFLAGS) -o $@
+		$(CXX) -c -std=c++11 $< $(CPPFLAGS) -o $@
 
 .PHONY: clean
 clean:
 		rm -f $(name) $(objects)
+
