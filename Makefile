@@ -4,7 +4,7 @@ COMMON_FLAGS = -Wall -Wextra
 CXXFLAGS += $(COMMON_FLAGS)
 CPPFLAGS += -I$(SRC_DIR)
 
-objects = CartridgeData.o Cartridge.o CPU.o head.o
+objects = CartridgeData.o Cartridge.o CPU.o GPU.o head.o
 name = header
 
 $(name) : $(objects)
