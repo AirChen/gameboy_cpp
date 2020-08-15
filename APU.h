@@ -3,7 +3,7 @@
 #define APU_1
 
 #include <vector>
-
+#include "Cartridge.h"
 typedef enum{
     Channel_Square1,
     Channel_Square2,
@@ -58,7 +58,7 @@ typedef enum{
 //      FF3F 0000 1111 Samples 30 and 31
 class Register_1
 {
-private:    
+public:    
     Channel channel;
     uint8_t nrx0;
     uint8_t nrx1;
@@ -159,7 +159,7 @@ public:
 
 class Clock
 {
-private:
+public:
     uint32_t period;
     uint32_t n;
 public:
@@ -223,6 +223,14 @@ public:
     void frequency_calculation();
     void reload();
 };
+
+class Apu: public Memory
+{
+private:
+    /* data */
+public:    
+};
+
 
 
 #endif

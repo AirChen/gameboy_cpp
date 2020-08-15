@@ -229,7 +229,7 @@ typedef struct {
 
 class Gpu: public Memory {
 
-private:
+public:
     // Digital image with mode RGB. Size = 144 * 160 * 3.
     // 3---------
     // ----------
@@ -329,7 +329,8 @@ private:
     uint32_t dots;
 
 public:
-    Gpu(Term term, Intf intf);
+    Gpu(Term term, Intf *intf);
+    ~Gpu();
 
     uint8_t get_ram0(uint16_t a);
     uint8_t get_ram1(uint16_t a);    

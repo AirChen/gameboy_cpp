@@ -94,7 +94,7 @@ inline void initalArray(uint8_t v, uint8_t **array, int d1, int d2, int d3)
     }
 }
 
-Gpu::Gpu(Term term, Intf intf) {    
+Gpu::Gpu(Term term, Intf *intf) {    
 
     data = (uint8_t ***)malloc(sizeof(uint8_t) * SCREEN_H * SCREEN_W * 3);
     initalArray(0xff, (uint8_t **)&data[0][0][0], SCREEN_H, SCREEN_W, 3);
@@ -135,6 +135,21 @@ Gpu::Gpu(Term term, Intf intf) {
     }    
 
     dots = 0;    
+}
+
+Gpu::~Gpu()
+{
+    free(data);
+    free(cobpi);
+    free(cbgpd);
+    free(ram);
+    free(oam);
+    free(prio);
+
+    delete lcdc;
+    delete stat;
+    delete cbgpi;
+    delete cobpi;
 }
 
 uint8_t Gpu::get_ram0(uint16_t a)
