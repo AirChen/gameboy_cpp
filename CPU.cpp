@@ -1,6 +1,6 @@
 #include "CPU.h"
 #include "Cartridge.h"
-#include "CartridgeData.h"
+#include "Util.h"
 #include <iostream>
 #include <thread>
 #include <ctime>

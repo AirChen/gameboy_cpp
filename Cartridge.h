@@ -4,13 +4,6 @@
 
 #include <vector>
 
-uint8_t wrapping_add(uint8_t a, uint8_t b);
-uint8_t wrapping_sub(uint8_t a, uint8_t b);
-uint16_t wrapping_sub_16(uint16_t a, uint16_t b);
-uint16_t wrapping_add_16(uint16_t a, uint16_t b);
-
-uint8_t trailing_zeros(uint8_t v);
-
 class Memory
 {
 protected:
@@ -21,7 +14,6 @@ public:
     void set(unsigned int a, uint8_t v){};
 
     uint16_t get_word(unsigned int a);
-
     uint16_t set_word(unsigned int a, uint16_t v);    
 };
 
