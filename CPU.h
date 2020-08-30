@@ -65,7 +65,7 @@ public:
 
 class Cpu
 {
-private:        
+public:        
     Register *reg;      // 寄存器
     Memory *mem;        // 可访问的内存空间
     bool halted;        // 表明 CPU 是否处于工作状态
