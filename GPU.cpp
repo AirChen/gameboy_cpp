@@ -78,17 +78,15 @@ void Hdma::set(unsigned int a, uint8_t v)
     }   
 }
 
-inline void initalArray(uint8_t v, uint8_t **array, int d1, int d2, int d3)
-{
-    uint8_t ***q = (uint8_t ***)*array;
+void initalArray(uint8_t v, uint8_t *array, int d1, int d2, int d3)
+{    
     for (size_t i = 0; i < d1; i++)
-    {
+    {        
         for (size_t j = 0; j < d2; j++)
-        {
+        {            
             for (size_t z = 0; z < d3; z++)
             {                
-                // *(array + i * d2 * d3 + j * d3 + z) = v;
-                q[i][j][z] = v;
+                *(array + i * d2 * d3 + j * d3 + z) = v;                
             }            
         }        
     }
@@ -96,9 +94,7 @@ inline void initalArray(uint8_t v, uint8_t **array, int d1, int d2, int d3)
 
 Gpu::Gpu(Term term, Intf *intf) {    
 
-    data = (uint8_t ***)malloc(sizeof(uint8_t) * SCREEN_H * SCREEN_W * 3);
-    initalArray(0xff, (uint8_t **)&data[0][0][0], SCREEN_H, SCREEN_W, 3);
-    
+    initalArray(0xff, &data[0][0][0], SCREEN_H, SCREEN_W, 3);
     intf = intf;    
     term = term;
     h_blank = false;
@@ -115,33 +111,30 @@ Gpu::Gpu(Term term, Intf *intf) {
     bgp = 0x00;
     op0 = 0x00;
     op1 = 0x01;
-    cbgpi = new Bgpi();   
-    cbgpd = (uint8_t ***)malloc(sizeof(uint8_t) * 8 * 4 * 3); 
-    initalArray(0, (uint8_t **)&cbgpd[0][0][0], 8, 4, 3);
+    cbgpi = new Bgpi();     
+    initalArray(0, &cbgpd[0][0][0], 8, 4, 3);
     
-    cobpi = new Bgpi();    
-    cobpd = (uint8_t ***)malloc(sizeof(uint8_t) * 8 * 4 * 3);
-    initalArray(0, (uint8_t **)&cobpd[0][0][0], 8, 4, 3);
+    cobpi = new Bgpi();        
+    initalArray(0, &cobpd[0][0][0], 8, 4, 3);    
+
     ram = (uint8_t *)malloc(sizeof(uint8_t) * 0x4000);
     // ram = [0x00; 0x4000], // 默认是 0
     ram_bank = 0x00;
     oam = (uint8_t *)malloc(sizeof(uint8_t) * 0xa0);
     // oam = [0x00; 0xa0],    
-
     prio = (Priority *)malloc(sizeof(Priority) * SCREEN_W);
     for (size_t i = 0; i < SCREEN_W; i++)
     {
         prio[i] = {true, 0};
     }    
-
     dots = 0;    
 }
 
 Gpu::~Gpu()
 {
-    free(data);
-    free(cobpi);
-    free(cbgpd);
+    // free(data);
+    // free(cobpi);
+    // free(cbgpd);
     free(ram);
     free(oam);
     free(prio);
@@ -555,7 +548,7 @@ void Gpu::set(unsigned int a, uint8_t v)
                 dots = 0;
                 ly = 0;
                 stat->mode = 0;
-                initalArray(0xff, (uint8_t **)&data[0][0][0], SCREEN_H, SCREEN_W, 3);
+                initalArray(0xff, &data[0][0][0], SCREEN_H, SCREEN_W, 3);
                 v_blank = true;
             }                
         }

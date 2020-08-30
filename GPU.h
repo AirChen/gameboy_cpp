@@ -236,7 +236,7 @@ public:
     // ----------
     // ---------- 160
     //        144
-    uint8_t ***data;
+    uint8_t data[144][160][3];
     Intf *intf;
     Term term;
     bool h_blank;
@@ -283,10 +283,10 @@ public:
     // include a soft-reset mechanic).
     //
     // Note: Type [[[u8; 3]; 4]; 8] equals with [u8; 64].
-    uint8_t ***cbgpd;
+    uint8_t cbgpd[8][4][3];
 
     Bgpi *cobpi;
-    uint8_t ***cobpd;
+    uint8_t cobpd[8][4][3];
 
     uint8_t *ram;
     uint8_t ram_bank;
