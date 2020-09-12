@@ -23,6 +23,24 @@ RomOnly::RomOnly(std::vector <uint8_t> v)
     rom = v;
 }
 
+void RomOnly::save(std::string path)
+{
+    if (path.empty())
+    {
+        return;
+    }
+
+    ofstream outFile(path, ios::binary);
+    if (!outFile || !outFile.is_open())
+    {
+        exit(1);
+    }
+    
+    uint8_t *pc = &rom[0];
+    outFile.write((char *)pc, rom.size());
+    outFile.close();
+}
+
 Mbc1::Mbc1(std::vector<uint8_t> o, std::vector<uint8_t> a, std::string path): ram(a), save_path(path) 
 { 
     bank_mode = BankMode_Rom;

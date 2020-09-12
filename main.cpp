@@ -2,8 +2,8 @@
 #include "include/MiniFB_cpp.h"
 #include "MotherBoard.h"
 
-#define WIDTH      800
-#define HEIGHT     600
+#define WIDTH      160
+#define HEIGHT     144
 
 using namespace std;
 static MotherBoard mbrd;
@@ -69,7 +69,7 @@ int main(int argc, char **argv)
     // rog::reg("gameboy");
     // rog::reg("gameboy::cartridge");
 
-    string rom("boxes.gb");
+    string rom("mem_timing.gb");
     // bool c_audio = false;
     // int c_scale = 2;    
     {
@@ -98,7 +98,10 @@ int main(int argc, char **argv)
     string title("Gameboy - { "+ rom_name +" }");
     struct mfb_window *window = mfb_open_ex(title.c_str(), WIDTH, HEIGHT, WF_RESIZABLE);
     if (!window)
+    {
+        cout << "with out windows" << endl;
         return 0;
+    }        
 
     mfb_set_keyboard_callback(window, gb_keyboard_func);
     mfb_update_state state;
@@ -122,12 +125,13 @@ int main(int argc, char **argv)
         }
         
         mfb_update(window, g_buffer);
-        if (!mfb_is_window_active(window)) {
-            window = 0x0;
-            break;
-        }
+        // if (!mfb_is_window_active(window)) {
+        //     window = 0x0;
+        //     cout << "windows not active" << endl;
+        //     break;
+        // }
     } while(mfb_wait_sync(window));
     // mbrd.mmu->cartridge->save(rom);
-
+    cout << "quit" << endl;
     return 0;
 }

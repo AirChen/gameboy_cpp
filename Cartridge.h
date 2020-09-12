@@ -10,11 +10,22 @@ protected:
     std::vector<uint8_t> rom;
 
 public:    
-    uint8_t get(unsigned int a);
-    void set(unsigned int a, uint8_t v){};
+    virtual uint8_t get(unsigned int a)
+    {
+        return rom[a];
+    }
+    virtual void set(unsigned int a, uint8_t v){};
 
-    uint16_t get_word(unsigned int a);
-    uint16_t set_word(unsigned int a, uint16_t v);    
+    virtual uint16_t get_word(unsigned int a)
+    {
+        return (uint16_t)a | (uint16_t)get(a+1) << 8;
+    };
+
+    virtual void set_word(unsigned int a, uint16_t v)
+    {
+        set(a, (uint8_t)(v & 0xff));
+        set(a + 1, (uint8_t)(v >> 8));
+    };         
 };
 
 class Stable
@@ -22,7 +33,7 @@ class Stable
 private:
     /* data */
 public:    
-    void save(std::string path);// save data to local
+    virtual void save(std::string path) = 0;// save data to local
 };
 
 class Cartridge: public Memory, public Stable

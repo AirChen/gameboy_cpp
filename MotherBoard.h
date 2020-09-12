@@ -22,6 +22,8 @@ typedef struct MotherBoard
 
     uint32_t next()
     {
+        cout << "pc ->> " << cpu->cpu->reg->pc << endl;
+
         if (mmu->get(cpu->cpu->reg->pc) == 0x10)
         {
             mmu->switch_speed();

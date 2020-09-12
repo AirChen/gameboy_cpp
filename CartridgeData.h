@@ -10,6 +10,8 @@ class RomOnly: public Cartridge
 {
 private:
     /* data */
+protected:
+    void save(std::string path);
 public:    
     RomOnly(std::vector <uint8_t> v);    
 };

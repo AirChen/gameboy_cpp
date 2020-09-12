@@ -7,21 +7,7 @@
 #include "CartridgeData.h"
 #include "Util.h"
 
-using namespace std;
-
-uint8_t Memory::get(unsigned int a)
-{
-    return rom[a];
-}
-
-uint16_t Memory::get_word(unsigned int a) {
-    return (uint16_t)a | (uint16_t)get(a+1) << 8;
-};
-
-uint16_t Memory::set_word(unsigned int a, uint16_t v) {
-    set(a, (uint8_t)(v & 0xff));
-    set(a + 1, (uint8_t)(v >> 8));
-};    
+using namespace std;   
 
 string Cartridge::title()
 {
@@ -326,8 +312,17 @@ Cartridge *createCart(std::string path)
         // }
     
     
-    ensure_logo(cart);
-    ensure_header_checksum(cart);
+    if (ensure_logo(cart))
+    {
+        cout << "Nintendo logo is ok" << endl;
+    }
+    
+    if (ensure_header_checksum(cart))
+    {
+        cout << "Cartridge's header checksum is ok" << endl;
+    }    
+
+    cout << "title: " << cart->title() << endl;
 
     return cart;
 }
