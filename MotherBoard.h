@@ -7,17 +7,19 @@
 
 using namespace std;
 
-typedef struct MotherBoard
+struct MotherBoard
 {
     Rtc *cpu;
     Mmunit *mmu;
 
-    static MotherBoard power_up(string path)
-    {
-        MotherBoard board;
-        board.mmu = new Mmunit(path);
-        board.cpu = new Rtc(board.mmu->term, board.mmu);
-        return board;
+    MotherBoard(string path) {
+        mmu = new Mmunit(path);
+        cpu = new Rtc(mmu->term, mmu);
+    }
+
+    ~MotherBoard() {
+        delete cpu;
+        delete mmu;
     }
 
     uint32_t next()

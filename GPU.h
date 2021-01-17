@@ -204,17 +204,14 @@ typedef enum {
     Flags_Joypad  = 4,
 } Flags;
 
-class Intf {
-public:
+struct Intf {
     uint8_t data;
 
-    Intf()
-    {
+    Intf() {
         data = 0x00;
     };
 
-    void hi(Flags flags)
-    {
+    void hi(Flags flags) {
         data |= 1 << (uint8_t)flags;
     }
 };

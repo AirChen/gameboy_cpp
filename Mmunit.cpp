@@ -24,7 +24,7 @@ Mmunit::Mmunit(string path) {
     shift = false;
     speed = Speed_Normal;
     term = tt;
-    timer = Timer::power_up(ii);
+    m_timer = new Timer(ii);
     inte = 0x00;
     intf = ii;
     hdma = new Hdma();
@@ -69,6 +69,7 @@ Mmunit::~Mmunit()
 {
     delete gpu;
     delete hdma;
+    delete m_timer;
 
     free(hram);
     free(wram);
@@ -79,7 +80,7 @@ uint32_t Mmunit::next(uint32_t cycles) {
     uint32_t vram_cycles = run_dma();
     uint32_t gpu_cycles = cycles / cpu_divider + vram_cycles;
     uint32_t cpu_cycles = cycles + vram_cycles * cpu_divider;
-    timer.next(cpu_cycles);
+    m_timer->next(cpu_cycles);
     gpu->next(gpu_cycles);
     // apu->as_mut().map_or((), |s| s.next(gpu_cycles));
     return gpu_cycles;
@@ -165,7 +166,7 @@ uint8_t Mmunit::get(unsigned int a)
     if (a >= 0xfea0 && a <= 0xfeff) { return 0x00; }
     if (a == 0xff00) return joypad.get(a);
     if (a >= 0xff01 && a <= 0xff02) { return serial.get(a); }
-    if (a >= 0xff04 && a <= 0xff07) { return timer.get(a); }
+    if (a >= 0xff04 && a <= 0xff07) { return m_timer->get(a); }
     if (a == 0xff0f) return intf->data;
     if (a >= 0xff10 && a <= 0xff3f)
     {
@@ -209,7 +210,7 @@ void Mmunit::set(unsigned int a, uint8_t v)
     if (a >= 0xfea0 && a <= 0xfeff) { 0x00; }
     if (a == 0xff00) joypad.set(a, v);
     if (a >= 0xff01 && a <= 0xff02) { serial.set(a, v); }
-    if (a >= 0xff04 && a <= 0xff07) { timer.set(a, v); }    
+    if (a >= 0xff04 && a <= 0xff07) { m_timer->set(a, v); }    
     // 0xff10..=0xff3f => self.apu.as_mut().map_or((), |s| s.set(a, v)),
     if (a == 0xff46)
     {

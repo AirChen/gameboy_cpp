@@ -121,7 +121,7 @@ typedef struct Serial {
 
 } Serial;
 
-typedef struct {
+struct Register_t {
     // This register is incremented at rate of 16384Hz (~16779Hz on SGB). Writing any value to this register resets it
     // to 00h.
     // Note: The divider is affected by CGB double speed mode, and will increment at 32768Hz in double speed.
@@ -139,25 +139,26 @@ typedef struct {
     //             10: CPU Clock / 64   (DMG, CGB:  65536 Hz, SGB:  ~67110 Hz)
     //             11: CPU Clock / 256  (DMG, CGB:  16384 Hz, SGB:  ~16780 Hz)
     uint8_t     tac;    
-} Register_t;
+};
 
 // Each time when the timer overflows (ie. when TIMA gets bigger than FFh), then an interrupt is requested by
 // setting Bit 2 in the IF Register (FF0F). When that interrupt is enabled, then the CPU will execute it by calling
 // the timer interrupt vector at 0050h.
-typedef struct Timer {
+struct Timer {
     Intf *intf;
     Register_t reg;
     Clock *div_clock;
     Clock *tma_clock;
 
-    static Timer power_up(Intf *ii)
-    {
-        Timer timer;
-        timer.intf = ii;
-        timer.reg;
-        timer.div_clock = new Clock(256);
-        timer.tma_clock = new Clock(1024);
-        return timer;
+    Timer(Intf *ii) {
+        intf = ii;        
+        div_clock = new Clock(256);
+        tma_clock = new Clock(1024);
+    }
+
+    ~Timer() {
+        delete div_clock;
+        delete tma_clock;
     }
 
     uint8_t get(uint16_t a)
@@ -237,8 +238,7 @@ typedef struct Timer {
             }
         }
     }
-
-} Timer;
+};
 
 typedef enum {
     Speed_Normal = 0x01,
@@ -255,7 +255,7 @@ public:
     bool shift;
     Speed speed;
     Term term;
-    Timer timer;
+    Timer *m_timer;
 
     uint8_t inte;
     Intf *intf;
